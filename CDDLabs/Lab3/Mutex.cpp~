@@ -1,0 +1,36 @@
+#include "Semaphore.h"
+#include <iostream>
+#include <thread>
+
+int counter=0;
+
+void taskOne(std::shared_ptr<Semaphore> Mutex){
+
+  Mutex->Signal();
+  counter++;
+  std::cout <<"I ";
+  std::cout << "must ";
+  std::cout << "print ";
+  std::cout << "first"<<std::endl;
+  
+}
+void taskTwo(std::shared_ptr<Semaphore> Mutex){
+  Mutex->Wait();
+  counter=counter +1;
+  std::cout <<"This ";
+  std::cout << "will ";
+  std::cout << "appear ";
+  std::cout << "second"<<std::endl;
+}
+
+int main(void){
+  std::thread threadOne, threadTwo;
+  std::shared_ptr<Semaphore> semMutex( new Semaphore);
+  /**< Launch the threads  */
+  threadOne=std::thread(taskTwo,semMutex);
+  threadTwo=std::thread(taskOne,semMutex);
+  std::cout << "Launched from the main\n";
+  threadOne.join();
+  threadTwo.join();
+  return 0;
+}
