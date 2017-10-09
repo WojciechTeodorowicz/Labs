@@ -13,7 +13,7 @@ CFLAGS=  -std=c++11 -pthread
 #Rendezvous.o: Rendezvous.cpp
 #	$(CC) -c $(CFLAGS) Rendezvous.cpp
 
-aLL: Semaphore.cpp Semaphore.h Rendezvous.cpp
+Rendezvous: Semaphore.cpp Semaphore.h Rendezvous.cpp
 	$(CC) $(CFLAGS) -o Rendezvous Semaphore.cpp Semaphore.h Rendezvous.cpp
 
 CLEAN:
