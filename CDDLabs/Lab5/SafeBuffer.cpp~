@@ -1,0 +1,33 @@
+#include "SafeBuffer.h"
+
+SafeBuffer::SafeBuffer(int max=0){
+
+  mutex = std::make_shared<Semaphore>(1);
+  units = std::make_shared<Semaphore>(0);
+  spaces = std::make_shared<Semaphore>(max);
+}
+
+void SafeBuffer::Producer(char d)
+{
+    spaces->Wait();
+    mutex->Wait();
+    buffer.push(d);
+    lockmutex->Signal();
+    units->Signal();
+}
+
+/*! \fn void Consumer()
+    \brief This function will be called from a thread.
+    \details Returns first item in the buffer
+*/
+char SafeBuffer::Consumer()
+{
+    char d;
+    units->Wait();
+    mutex->Wait();
+    d = sharedBuffer.front();
+    sharedBuffer.pop();
+    mutex->Signal();
+    spaces->Signal();
+    return d;
+}

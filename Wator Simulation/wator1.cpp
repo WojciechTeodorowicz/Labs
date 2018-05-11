@@ -4,28 +4,27 @@
 
 int main()
 {
-  int NumShark = 5;
-  int NumFish = 10;
+  int n;
   int x;
   int y;
 
   sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
-  // Set Frame Rate to 60fps
-  srand(time(0));
+ // Set Frame Rate to 60fps
     window.setFramerateLimit(60);
-    sf::CircleShape shark(5);
-    shark.setFillColor(sf::Color(sf::Color::Red));
-    sf::CircleShape fish(1);
-    fish.setFillColor(sf::Color(sf::Color::Blue));
-    std::vector<sf::CircleShape> Sharks(NumShark,sf::CircleShape(shark));
 
-      for (i = 0; i < NumShark.size(); i++)
-	{
-	Sharks[NumShark].setOrigin(15, 15);
-        Sharks[NumShark].getPosition();
-        Sharks[NumShark].setPosition(x = rand() % 790 + 10, y = rand() % -10 - 50);
-    }
-    
+    srand(time(0));
+    sf::CircleShape shark(2);
+
+    sf::Texture shark;
+     shark.loadFromFile("image.png");
+    std::vector<sf::Sprite> Fishes(n,sf::Sprite(shark));
+    // Initialise fishes
+     for (n = 0; n < Fishes.size(); n++){
+        Fishes[n].setOrigin(15, 15);
+        Fishes[n].getPosition();
+        Fishes[n].setPosition(x = (int) rand() % 10);
+      }
+
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -37,17 +36,17 @@ int main()
 	  if (event.type == sf::Event::Closed)
                 window.close();
         }
-
-	    Sharks[NumShark].setPosition(x, y+=1);
-            Sharks[NumShark].rotate(1);
-
+	Fishes[n].setPosition(x, y+=1);
+	Fishes[n].rotate(1);
             // clear the window with black color
             window.clear(sf::Color::Black);
 
             // draw everything here...
             // window.draw(...);
-            window.draw(Sharks(NumShark);
-
+	  for(int n = 0; n < Fishes.size(); n++)
+	  {
+            window.draw(Fishes[n]);
+	  }
             // end the current frame
             window.display();
         }

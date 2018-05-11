@@ -4,6 +4,8 @@
 
 int main()
 {
+  
+  char GridSize[GridSizeHeight][GridSizeWidth];
   int NumShark = 5;
   int NumFish = 10;
   int x;
@@ -18,14 +20,42 @@ int main()
     sf::CircleShape fish(1);
     fish.setFillColor(sf::Color(sf::Color::Blue));
     std::vector<sf::CircleShape> Sharks(NumShark,sf::CircleShape(shark));
-
-      for (i = 0; i < NumShark.size(); i++)
+    void Sharks()
+    {
+      for (int i = 0; i < NumShark; i++)
 	{
-	Sharks[NumShark].setOrigin(15, 15);
-        Sharks[NumShark].getPosition();
-        Sharks[NumShark].setPosition(x = rand() % 790 + 10, y = rand() % -10 - 50);
+	  x = (int) random() % 10;
+	  y = (int) random() % 10;
+	  GridSize[x][y] = 'f';
+	  GridSize[x][y] = '0';
+	}
     }
-    
+    void Fishs()
+    {
+      for(int i=0; i < NumFish; i++)
+	{
+	  x = (int) random() % 10;
+	  y = (int) random() % 10;
+	  GridSize[x][y] = 'S';
+	  GridSize[x][y] = '0';
+	}
+    }
+    void SpawnFishAndShark()
+    {
+      Sharks();
+      Fish();
+    }
+    void displaOcean()
+    {
+      for(int i = 0; i < GridSizex; i++)
+	{
+	for(int j = 0; j < GridSizey; j++)
+	  {
+	    std::cout << ocean[i][j];
+	  }
+	}
+    }
+	     
     // run the program as long as the window is open
     while (window.isOpen())
     {

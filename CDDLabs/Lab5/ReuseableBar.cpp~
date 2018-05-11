@@ -1,0 +1,60 @@
+#include "Semaphore.h"
+#include <iostream>
+#include <thread>
+
+int count = 0;
+int threads = 3;
+int times = 0;
+
+void reusableBarrier(std::shared_ptr<Semaphore> mutex, std::shared_ptr<Semaphore> thread2, std::shared_ptr<Semaphore> thread2 ){
+
+  while(times <= 2)
+    {
+    mutex->Wait();
+    count += 1;
+    if (count == threads)
+      {
+      turnstile2->Wait();
+      std::cout << "\n No THreads here";
+      turnstile1->Signal();
+      }
+      mutex->Signal();
+      
+    turnstile1->Wait();
+    std::cout << "\n Generating Thread1";
+    turnstile1->Signal();
+
+    mutex->Wait();
+    count -= 1;
+    if (count == 0)
+      {
+      turnstile1->Wait();
+      turnstile2->Signal();
+      times ++;
+      }
+    mutex->Signal();
+    turnstile2->Wait();
+    std::cout << "\n Generating Thread2";
+    turnstile2->Signal();
+    }
+}
+
+int main(void){
+  std::thread threadOne, threadTwo, threadThree;
+  std::shared_ptr<Semaphore> mutex( new Semaphore(1));
+  std::shared_ptr<Semaphore> thread1( new Semaphore(0));
+  std::shared_ptr<Semaphore> thread2( new Semaphore(1));
+  
+  /** Generate all the threads  */
+  threadOne=std::thread(reusableBarrier, mutex, thread1, thread2);
+  threadTwo=std::thread(reusableBarrier, mutex, thread2, thread2);
+  threadThree=std::thread(reusableBarrier, mutex, thread1, thread2);
+  
+  std::cout << "Launched from the main\n";
+  
+  threadOne.join();
+  threadTwo.join();
+  threadThree.join();
+  
+  return 0;
+}
